@@ -1,25 +1,20 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
 from pydantic import BaseModel
 from selenium import webdriver
 from selenium_stealth import stealth
 import time
 import random
 
-def generate_random_number():
-    return random.randint(12, 20)
-
-visualizacao = generate_random_number()
-
 app = FastAPI()
 
-# Modelo esperado no JSON
 class WebhookData(BaseModel):
     mensagem: str
 
-@app.post("/webhook")
-async def webhook(data: WebhookData):    
-    
-    for i in range(visualizacao):
+def generate_random_number():
+    return random.randint(12, 20)
+
+def visualizar_url(mensagem: str, visualizacao: int):
+    for _ in range(visualizacao):
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
         options.add_argument("--disable-gpu")
@@ -38,9 +33,12 @@ async def webhook(data: WebhookData):
                 fix_hairline=True,
                 )
 
-        driver.get(data.mensagem)   
-
+        driver.get(mensagem)
         time.sleep(150)
         driver.quit()
-    
-    return {"status": 'ok'}
+
+@app.post("/webhook")
+async def webhook(data: WebhookData, background_tasks: BackgroundTasks):
+    visualizacao = generate_random_number()
+    background_tasks.add_task(visualizar_url, data.mensagem, visualizacao)
+    return {"status": "recebido"}
