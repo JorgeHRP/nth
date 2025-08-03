@@ -11,7 +11,7 @@ class WebhookData(BaseModel):
     mensagem: str
 
 def generate_random_number():
-    return random.randint(12, 20)
+    return random.randint(19, 25)
 
 def visualizar_url(mensagem: str, visualizacao: int):
     for _ in range(visualizacao):
