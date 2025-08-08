@@ -39,7 +39,7 @@ def visualizar_url(mensagem: str, visualizacao: int):
             time.sleep(150)
             driver.quit()
     except:
-        requests.get("http://31.97.28.58:3000/api/deploy/aa7187676991b38f82bf9ea14aae008131d0c10680295640")
+        requests.get("http://31.97.28.58:3000/api/deploy/1c34065a7db651b2cc8a4db5ec51c2107d8e2b87d37d872d")
         time.sleep(300)
         
         for _ in range(visualizacao):
